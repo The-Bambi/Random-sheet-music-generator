@@ -38,67 +38,72 @@ def makeBase(variables, voices, title, subtitle, composer, time, key):
     scores_str = ""
 
 
-    header = f"""\\header {OB}
-        title = {title}
-        subtitle = {subtitle}
-        composer = {composer}
-        arranger = "Krystian Figiel"
-        {CB}"""
+    header = f"""
+\\header {OB}
+    title = \\title
+    subtitle = \\subtitle
+    composer = \\composer
+    arranger = "Krystian Figiel"
+{CB}
+    """
 
     for voice, variable in zip(voices, variables):
         voice_str = f"""
-        {variable} = \\relative c {OB}
+{variable} = \\relative c {OB}
 
-        {CB}
+{CB}
         """
         voices_str += voice_str
 
         staff_str = f"""
-        \\new Staff \\with {OB}
-            instrumentName = #"{voice}"
-        {CB}
-        {OB}
-            \\global
-            \\{variable}
-        {CB}
+                    \\new Staff \\with {OB}
+                        instrumentName = #"{voice}"
+                    {CB}
+                    {OB}
+                        \\global
+                        \\{variable}
+                    {CB}
         """
         staffs_str += staff_str
 
         score_str = f"""
-        \\score {OB}
-                <<
-                    {staff_str}
-                >>
-                {header}
-                {CB}
-        \\pageBreak
+\\score {OB}
+        <<
+            {staff_str}
+        >>
+        {header}
+        {CB}
+\\pageBreak
         """
         scores_str += score_str
 
     return f"""
-    
-    {voices_str}
+title = #"{title}
+subtitle = #"{subtitle}"
+composer = #"{composer}"
 
-    global = {OB}
-	    \\time {time}
-	    \\key {key}
-    {CB}
-    
-    
-    \\book {OB}
-	    \\paper {OB}
-		    print-all-headers = ##t
-		    print-page-number = ##f
-	    {CB}
-	    \\score {OB}
-		    <<
-                        {staffs_str}
-		    >>
-	    {header}
-	    {CB}
-	    \\pageBreak
-	
-        {scores_str}    
-    {CB}
-    \\version "2.18.2"
-"""
+{voices_str}
+
+global = {OB}
+        \\time {time}
+        \\key {key}
+{CB}
+
+
+\\book {OB}
+        \\paper {OB}
+                print-all-headers = ##t
+                print-page-number = ##f
+        {CB}
+        \\score {OB}
+                <<
+                    {staffs_str}
+                >>
+        {header}
+        {CB}
+        \\pageBreak
+
+    {scores_str}
+{CB}
+\\version "2.18.2"
+    """
