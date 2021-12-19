@@ -1,3 +1,6 @@
+import re
+
+
 OB = "{"
 CB = "}"
 
@@ -33,6 +36,11 @@ def makeBase(variables, voices, title, subtitle, composer, time, key):
     time kappa
     key kappa
     """
+
+    for var in variables:
+        assert not re.search(r'\d', var)
+
+
     voices_str = ""
     staffs_str = ""
     scores_str = ""
